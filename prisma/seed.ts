@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding started...");
 
-  // Seed Admin User
+  /* Seed Admin User*/
   const adminPassword = await bcrypt.hash("admin123", 10);
   const admin = await prisma.user.upsert({
     where: { email: "admin@shinywave.lk" },
@@ -21,7 +21,7 @@ async function main() {
   });
   console.log(`✅ Admin seeded: ${admin.email}`);
 
-  // Seed Demo User
+  //Seed Demo User
   const userPassword = await bcrypt.hash("user123", 10);
   const demoUser = await prisma.user.upsert({
     where: { email: "kasun@example.com" },
@@ -36,7 +36,7 @@ async function main() {
   });
   console.log(`✅ Demo user seeded: ${demoUser.email}`);
 
-  // Seed Service Categories
+  //Seed ServiceCategories..
   const categories = [
     {
       name: "Oil Change",
@@ -81,3 +81,45 @@ async function main() {
       duration: "3–4 hrs",
     },
   ];
+
+  for (const cat of categories) {
+    const c = await prisma.serviceCategory.upsert({
+      where: { slug: cat.slug },
+      update: { description: cat.description, priceRange: cat.priceRange },
+      create: cat,
+    });
+    console.log(`✅ Category seeded: ${c.name}`);
+  }
+
+  // SeedWelcomeAnnouncement
+  const announcement = await prisma.announcement.create({
+    data: {
+      title: "Welcome to Shiny Wave Auto Services!",
+      message: "We are thrilled to launch our new online booking platform. Book your service appointment online and track progress in real-time. Enjoy 10% off your first booking this month!",
+    },
+  });
+
+  // Createnotification for demo user
+  await prisma.notification.create({
+    data: {
+      userId: demoUser.id,
+      announcementId: announcement.id,
+      title: announcement.title,
+      message: announcement.message,
+    },
+  });
+  console.log(`✅ Announcement seeded: ${announcement.title}`);
+
+  console.log("\n🎉 Seeding completed successfully!");
+  console.log("   Admin: admin@shinywave.lk / admin123");
+  console.log("   User:  kasun@example.com / user123");
+}
+
+main()
+  .catch((e) => {
+    console.error("Error seeding database:", e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
