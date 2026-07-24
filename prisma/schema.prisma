@@ -43,4 +43,48 @@ model Booking {
   user          User?    @relation(fields: [userId], references: [id])
 }
 
+model ServiceCategory {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String
+  imageUrl    String?
+  priceRange  String?
+  duration    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
 
+model Announcement {
+  id            String         @id @default(uuid())
+  title         String
+  message       String
+  publishedAt   DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  notifications Notification[]
+}
+
+model Notification {
+  id             String        @id @default(uuid())
+  userId         String
+  announcementId String?
+  bookingId      String?
+  title          String
+  message        String
+  isRead         Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  user           User          @relation(fields: [userId], references: [id])
+  announcement   Announcement? @relation(fields: [announcementId], references: [id])
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
