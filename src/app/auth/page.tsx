@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <main>
-      {/* TODO: Implement Page */}
+      {/*Implement Page*/}
     </main>
   );
 }
@@ -81,7 +81,7 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* Right Panel — Form */}
+      {/*Right Panel Form*/}
       <div style={{ width: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem", background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)" }} className="auth-right">
         <div style={{ width: "100%", maxWidth: 420 }}>
           <div style={{ background: "white", borderRadius: 20, padding: "2.5rem", boxShadow: "0 30px 80px rgba(0,0,0,0.3)" }}>
@@ -106,7 +106,7 @@ export default function AuthPage() {
               ))}
             </div>
 
-            {/* LOGIN FORM */}
+            {/*login*/}
             {tab === "login" && (
               <form action={loginAction} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                 <div style={{ textAlign: "center", marginBottom: "0.5rem" }}>
@@ -152,7 +152,7 @@ export default function AuthPage() {
               </form>
             )}
 
-            {/* REGISTER FORM */}
+            {/*REGISTER FORM*/}
             {tab === "register" && (
               <form action={regAction} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div style={{ textAlign: "center", marginBottom: "0.5rem" }}>
