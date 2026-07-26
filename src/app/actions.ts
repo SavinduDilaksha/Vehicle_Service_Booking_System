@@ -11,9 +11,9 @@ import path from "path";
 
 const JWT_SECRET = process.env.JWT_SECRET || "shiny-wave-secret-key-2026";
 
-//=============
-//AUTH HELPERS
-//=============
+// ============================================================
+// AUTH HELPERS
+// ============================================================
 
 export async function getSession() {
   const cookieStore = await cookies();
@@ -44,9 +44,9 @@ export async function requireAdmin() {
   return session;
 }
 
-//============
+// ============================================================
 // AUTH ACTIONS
-//==========
+// ============================================================
 
 export async function loginUser(prevState: any, formData: FormData) {
   const email = formData.get("email")?.toString().trim().toLowerCase();
@@ -143,9 +143,9 @@ export async function logoutUser() {
   cookieStore.delete("sw_token");
 }
 
-//================
-//BOOKING ACTIONS
-//================
+// ============================================================
+// BOOKING ACTIONS
+// ============================================================
 
 export async function createBooking(data: {
   userId?: string;
@@ -233,9 +233,9 @@ export async function deleteBooking(bookingId: string) {
   }
 }
 
-//=========================
-//SERVICE CATEGORY ACTIONS
-//=========================
+// ============================================================
+// SERVICE CATEGORY ACTIONS
+// ============================================================
 
 export async function createCategory(formData: FormData) {
   await requireAdmin();
@@ -277,6 +277,7 @@ export async function updateCategory(id: string, formData: FormData) {
   await requireAdmin();
 
   const name = formData.get("name")?.toString().trim();
+  const slug = formData.get("slug")?.toString().trim();
   const description = formData.get("description")?.toString().trim();
   const priceRange = formData.get("priceRange")?.toString().trim();
   const duration = formData.get("duration")?.toString().trim();
@@ -298,6 +299,7 @@ export async function updateCategory(id: string, formData: FormData) {
       where: { id },
       data: {
         ...(name && { name }),
+        ...(slug && { slug }),
         ...(description && { description }),
         ...(priceRange && { priceRange }),
         ...(duration && { duration }),
@@ -307,7 +309,8 @@ export async function updateCategory(id: string, formData: FormData) {
     revalidatePath("/services");
     revalidatePath("/admin/categories");
     return { success: true };
-  } catch {
+  } catch (e: any) {
+    if (e?.code === "P2002") return { error: "A category with this name or slug already exists." };
     return { error: "Failed to update category." };
   }
 }
@@ -324,9 +327,9 @@ export async function deleteCategory(id: string) {
   }
 }
 
-//============================================================
-//ANNOUNCEMENT ACTIONS
-//============================================================
+// ============================================================
+// ANNOUNCEMENT ACTIONS
+// ============================================================
 
 export async function createAnnouncement(data: { title: string; message: string }) {
   await requireAdmin();
@@ -365,9 +368,9 @@ export async function deleteAnnouncement(id: string) {
   }
 }
 
-//============================================================
-//NOTIFICATION ACTIONS
-//============================================================
+// ============================================================
+// NOTIFICATION ACTIONS
+// ============================================================
 
 export async function markNotificationsRead(userId: string) {
   try {
@@ -382,9 +385,9 @@ export async function markNotificationsRead(userId: string) {
   }
 }
 
-//============================================================
-//PROFILE ACTIONS
-//============================================================
+// ============================================================
+// PROFILE ACTIONS
+// ============================================================
 
 export async function updateProfile(prevState: any, formData: FormData) {
   const session = await requireAuth();
@@ -423,9 +426,9 @@ export async function updateProfile(prevState: any, formData: FormData) {
   }
 }
 
-//================
-//CONTACT MESSAGE
-//================
+// ============================================================
+// CONTACT MESSAGE
+// ============================================================
 
 // Plain version for direct form action (no prevState)
 export async function submitContactDirect(formData: FormData) {
