@@ -26,10 +26,10 @@ export default function AdminDashboard() {
   const completedCount = bookings.filter((b) => b.status === 'Completed').length;
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', paddingTop: '70px', minHeight: '100vh' }}>
       <AdminSidebar />
-      <main style={{ flex: 1, padding: '2.5rem', background: 'var(--grey-50)', minHeight: 'calc(100vh - 70px)' }}>
-        <h1 style={{ fontSize: '1.8rem', color: 'var(--navy)', marginBottom: '0.25rem' }}>Admin Dashboard</h1>
+      <main style={{ flex: 1, padding: '2.5rem', background: 'var(--grey-50)', minHeight: 'calc(100vh - 70px)', minWidth: 0 }}>
+        <h1 style={{ fontSize: '1.8rem', color: 'var(--navy)', marginBottom: '0.25rem', fontWeight: 800 }}>Admin Dashboard</h1>
         <p style={{ color: 'var(--grey-500)', fontSize: '0.9rem', marginBottom: '2rem' }}>Overview of system bookings, categories, and activity.</p>
 
         {/* Stats Grid */}
@@ -57,34 +57,36 @@ export default function AdminDashboard() {
 
         {/* Recent Bookings Table */}
         <div className="card" style={{ padding: '1.75rem' }}>
-          <h2 style={{ fontSize: '1.2rem', color: 'var(--navy)', marginBottom: '1.25rem' }}>Recent Booking Activity</h2>
+          <h2 style={{ fontSize: '1.2rem', color: 'var(--navy)', marginBottom: '1.25rem', fontWeight: 800 }}>Recent Booking Activity</h2>
           {loading ? (
             <p style={{ color: 'var(--grey-500)' }}>Loading activity...</p>
           ) : (
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid var(--grey-100)', color: 'var(--grey-500)' }}>
-                  <th style={{ padding: '0.75rem 0' }}>Customer</th>
-                  <th style={{ padding: '0.75rem 0' }}>Service</th>
-                  <th style={{ padding: '0.75rem 0' }}>Vehicle</th>
-                  <th style={{ padding: '0.75rem 0' }}>Date & Time</th>
-                  <th style={{ padding: '0.75rem 0' }}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.slice(0, 5).map((b) => (
-                  <tr key={b._id} style={{ borderBottom: '1px solid var(--grey-100)' }}>
-                    <td style={{ padding: '1rem 0', fontWeight: 600 }}>{b.userId?.name || 'Customer'}</td>
-                    <td style={{ padding: '1rem 0' }}>{b.serviceName}</td>
-                    <td style={{ padding: '1rem 0' }}>{b.vehicleModel} ({b.regNumber})</td>
-                    <td style={{ padding: '1rem 0', color: 'var(--grey-500)' }}>{b.preferredDate} ({b.preferredTime})</td>
-                    <td style={{ padding: '1rem 0' }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.75rem' }}>{b.status}</span>
-                    </td>
+            <div style={{ overflowX: 'auto' }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Service</th>
+                    <th>Vehicle</th>
+                    <th>Date & Time</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {bookings.slice(0, 5).map((b) => (
+                    <tr key={b._id}>
+                      <td style={{ fontWeight: 700 }}>{b.userId?.name || 'Customer'}</td>
+                      <td>{b.serviceName}</td>
+                      <td>{b.vehicleModel} ({b.regNumber})</td>
+                      <td style={{ color: 'var(--grey-500)' }}>{b.preferredDate} ({b.preferredTime})</td>
+                      <td>
+                        <span className={`badge badge-${b.status.toLowerCase()}`}>{b.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </main>

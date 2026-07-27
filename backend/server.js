@@ -33,7 +33,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message || 'Server Error' });
 });
 
-const PORT = 5050;
+const PORT = process.env.PORT || 5050;
 
 app.listen(PORT, () => {
   console.log(`🚀 MERN Backend Server running on http://localhost:${PORT}`);

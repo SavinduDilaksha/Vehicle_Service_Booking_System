@@ -44,7 +44,7 @@ export default function AdminAnnouncements() {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', paddingTop: '70px', minHeight: '100vh' }}>
       <AdminSidebar />
       <main style={{ flex: 1, padding: '2.5rem', background: 'var(--grey-50)', minHeight: 'calc(100vh - 70px)' }}>
         <h1 style={{ fontSize: '1.8rem', color: 'var(--navy)', marginBottom: '0.25rem' }}>Announcements Broadcast</h1>
