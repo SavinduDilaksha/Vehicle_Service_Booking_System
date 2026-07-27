@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vehicle Service Booking System (MERN Stack)
 
-## Getting Started
+A complete decoupled **MERN Stack** (MongoDB, Express.js, React.js, Node.js) web application for vehicle service booking and management.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Directory Structure
+
+```
+MERN_App/
+├── backend/          # Node.js + Express + Mongoose REST API (Port 5000)
+│   ├── config/       # Database connection
+│   ├── controllers/  # API request handlers
+│   ├── middleware/   # JWT authentication & admin protection
+│   ├── models/       # MongoDB Schemas (User, Booking, ServiceCategory, etc.)
+│   ├── routes/       # Express route handlers
+│   ├── seed.js       # Database seeder script
+│   ├── server.js     # Express App entry point
+│   └── .env          # Environment configuration
+│
+└── frontend/         # React + Vite Single Page Application (Port 3000)
+    ├── src/
+    │   ├── api/      # Axios client with JWT headers
+    │   ├── components/# Navbar, Footer, AdminSidebar, ProtectedRoute
+    │   ├── context/  # AuthContext for global user state
+    │   ├── pages/    # Home, Services, Book, Login, Register, Profile, Admin Pages
+    │   ├── App.jsx   # Client-side router
+    │   └── main.jsx
+    └── vite.config.js
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How to Run the Project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Backend Setup (`backend/`)
 
-## Learn More
+Open a terminal window and navigate to `backend`:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd backend
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Seed Initial Data (Admin & Demo Users):**
+```bash
+npm run seed
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Start Backend Server:**
+```bash
+npm run dev
+```
+> Server will start at: **http://localhost:5000**
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2. Frontend Setup (`frontend/`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open a second terminal window and navigate to `frontend`:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+> React App will open at: **http://localhost:3000**
+
+
+
+## Default Credentials
+
+- **Admin Account**: `admin@shinywave.lk` / `admin123`
+- **User Account**: `kasun@example.com` / `user123`
+
+---
+
+## REST API Endpoints
+
+## Authentication (`/api/auth`)
+- **`POST /api/auth/register`** — Register new user
+- **`POST /api/auth/login`** — Login & receive JWT token
+- **`GET /api/auth/me`** — Get current logged-in user profile (Requires `Authorization: Bearer <TOKEN>`)
+
+## 🔧 Services (`/api/services`)
+- **`GET /api/services`** — Get all service categories
+- **`GET /api/services/:slug`** — Get single service details
+- **`POST /api/services`** — Create service category (Admin)
+- **`PUT /api/services/:id`** — Update service category (Admin)
+- **`DELETE /api/services/:id`** — Delete service category (Admin)
+
+## Bookings (`/api/bookings`)
+- **`POST /api/bookings`** — Create new vehicle booking (User)
+- **`GET /api/bookings/my`** — Get logged-in user's booking history
+- **`GET /api/bookings`** — Get all bookings (Admin)
+- **`PUT /api/bookings/:id/status`** — Update booking status (`Pending`, `Approved`, `Completed`, `Cancelled`) (Admin)
